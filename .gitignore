@@ -21,3 +21,12 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# IDE
+.vscode
+.cursor
+.idea
+.windsurf
+
+# Drizzle DB Migration
+src/lib/server/db/migrations
