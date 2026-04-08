@@ -3,10 +3,10 @@ import { Pool } from 'pg';
 import * as schema from './schema';
 import * as authSchema from './schema/auth-schema';
 import * as relations from './schema/relations';
-import { env } from '$env/dynamic/private';
+import 'dotenv/config';
 
-if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
+if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
-const client = new Pool({ connectionString: env.DATABASE_URL });
+const client = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export const db = drizzle({ client, schema: { ...schema, ...authSchema, ...relations } });
