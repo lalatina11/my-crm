@@ -9,7 +9,7 @@ export const contactSchema = z.object({
 		.string({ message: 'Name must be a string' })
 		.min(3, { message: 'Name must be at least 3 characters long' })
 		.max(128, { message: 'Name must be at most 128 characters long' }),
-	email: z.email({ message: 'Please enter a valid email address' }),
+	email: z.email({ message: 'Please enter a valid email address' }).trim().toLowerCase(),
 	phone: z
 		.string({ message: 'Phone must be a string' })
 		.min(8, { message: 'Phone number must be at least 8 characters long' })
