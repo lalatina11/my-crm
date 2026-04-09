@@ -175,7 +175,6 @@
 									value={field.state.value}
 									onValueChange={(val) => {
 										field.setValue(val as Contact['status']);
-										console.log({ val: field.state.value });
 									}}
 								>
 									<Select.Trigger>
