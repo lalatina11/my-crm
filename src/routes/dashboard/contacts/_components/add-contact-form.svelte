@@ -65,7 +65,7 @@
 
 <Dialog.Root open={isDialogOpen} onOpenChange={() => setDialogOpen()}>
 	<Button onclick={() => setDialogOpen('open')}><Plus /> Add Contact</Button>
-	<Dialog.Content class="w-lg">
+	<Dialog.Content class="w-full md:w-[70vw] lg:w-lg">
 		<form onsubmit={handleSubmit} class="space-y-3">
 			<Dialog.Header>
 				<Dialog.Title>Add Contact</Dialog.Title>
