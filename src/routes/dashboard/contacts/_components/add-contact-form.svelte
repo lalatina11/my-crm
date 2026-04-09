@@ -71,8 +71,8 @@
 				<Dialog.Title>Add Contact</Dialog.Title>
 				<Dialog.Description>Add new Contact</Dialog.Description>
 			</Dialog.Header>
-			<ScrollArea class="h-[60vh] pr-4">
-				<Field.Group class="my-6">
+			<ScrollArea class="h-[60vh]">
+				<Field.Group class="p-3 pr-6">
 					<form.Field name="name">
 						{#snippet children(field)}
 							<Field.Set class="gap-2">
