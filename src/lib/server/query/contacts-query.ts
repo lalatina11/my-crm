@@ -15,7 +15,8 @@ export function getContactsData(q: string) {
 							ilike(address, `%${q}%`)
 						)
 					: undefined;
-			}
+			},
+			orderBy: ({ createdAt }, { desc }) => desc(createdAt)
 		});
 	} catch (error) {
 		if (env.NODE_ENV !== 'production') {
