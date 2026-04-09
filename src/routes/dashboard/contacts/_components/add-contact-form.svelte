@@ -7,6 +7,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import * as Select from '$lib/components/ui/select';
+	import { Spinner } from '$lib/components/ui/spinner';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { capitalizingText } from '$lib/helpers';
 	import type { ApiResponse } from '$lib/types/api-response';
@@ -61,6 +62,8 @@
 			return (isDialogOpen = false);
 		}
 	}
+
+	const formLoadingState = form.useStore((state) => state.isSubmitting);
 </script>
 
 <Dialog.Root open={isDialogOpen} onOpenChange={() => setDialogOpen()}>
@@ -255,7 +258,13 @@
 			</ScrollArea>
 			<Dialog.Footer>
 				<Dialog.Close class={buttonVariants({ variant: 'outline' })}>Cancel</Dialog.Close>
-				<Button type="submit">Submit</Button>
+				<Button disabled={formLoadingState.current} type="submit">
+					{#if formLoadingState.current}
+						<Spinner />
+					{:else}
+						Submit
+					{/if}
+				</Button>
 			</Dialog.Footer>
 		</form>
 	</Dialog.Content>
