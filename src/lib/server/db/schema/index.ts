@@ -1,5 +1,6 @@
 import { pgTable, serial, integer, text, varchar, uuid, date } from 'drizzle-orm/pg-core';
 import { id, timeStamps } from '$lib/db-schema-helper';
+import { allowedDealStatus } from '$lib/validators/deal-schema';
 
 export const task = pgTable('task', {
 	id: serial('id').primaryKey(),
@@ -23,9 +24,9 @@ export const deals = pgTable('deals', {
 	id,
 	...timeStamps,
 	title: varchar({ length: 255 }),
-	dealValue: integer('deal_value'),
+	value: integer('value'),
 	status: text({
-		enum: ['QUALIFICATION', 'PROPOSAL', 'NEGOTIATION', 'CLOSED_WON', 'CLOSED_LOST']
+		enum: allowedDealStatus
 	}).notNull(),
 	contactId: uuid('contact_id')
 		.references(() => contacts.id, { onDelete: 'cascade' })
