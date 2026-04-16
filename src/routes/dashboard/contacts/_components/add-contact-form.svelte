@@ -246,7 +246,7 @@
 									}}
 									aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
 									autocomplete="off"
-									placeholder="Jakarta City"
+									placeholder="Write the notes here..."
 								></Textarea>
 								{#if field.state.meta.isTouched && !field.state.meta.isValid}
 									<Field.Error errors={[{ message: field.state.meta.errors[0]?.message }]} />
