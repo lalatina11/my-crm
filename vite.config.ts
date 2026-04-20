@@ -6,8 +6,5 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	ssr: {
 		noExternal: ['@thisux/sveltednd']
-	},
-	optimizeDeps: {
-		include: ['@thisux/sveltednd']
 	}
 });

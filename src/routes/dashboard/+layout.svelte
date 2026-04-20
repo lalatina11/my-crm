@@ -2,11 +2,17 @@
 	import DashboadSidebar from '$lib/components/dashboad-sidebar.svelte';
 	import ModeToggle from '$lib/components/ModeToggle.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar';
+	import type { Snippet } from 'svelte';
+	import type { LayoutProps } from './$types';
 
-	const { children } = $props();
+	interface Props extends LayoutProps {
+		children: Snippet<[]>;
+	}
+
+	const { children, data }: Props = $props();
 </script>
 
-<Sidebar.Provider>
+<Sidebar.Provider open={data.sidebarState}>
 	<DashboadSidebar />
 	<main class="flex min-h-screen w-full flex-col">
 		<header class="flex items-center justify-between bg-card p-4">
