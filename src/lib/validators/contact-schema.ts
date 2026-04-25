@@ -1,6 +1,6 @@
 import type { Contact } from '$lib/types/db-schema-type';
 import z from 'zod';
-export const allowedStatus = ['CHURNED', 'CUSTOMER', 'LEAD', 'PROSPECT'] as Array<
+export const allowedContactStatus = ['CHURNED', 'CUSTOMER', 'LEAD', 'PROSPECT'] as Array<
 	Contact['status']
 >;
 
@@ -18,8 +18,8 @@ export const contactSchema = z.object({
 		.string({ message: 'Company must be a string' })
 		.min(3, { message: 'Company name must be at least 3 characters long' })
 		.max(128, { message: 'Company name must be at most 128 characters long' }),
-	status: z.enum(allowedStatus, {
-		message: 'Status must be one of: ' + allowedStatus.join(', ')
+	status: z.enum(allowedContactStatus, {
+		message: 'Status must be one of: ' + allowedContactStatus.join(', ')
 	}),
 	address: z.string({ message: 'Address must be a string' }),
 	notes: z.string({ message: 'Notes must be a string' })

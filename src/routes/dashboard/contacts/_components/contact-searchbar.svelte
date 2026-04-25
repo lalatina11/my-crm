@@ -3,44 +3,35 @@
 	import { page } from '$app/state';
 	import * as InputGroup from '$lib/components/ui/input-group';
 	import { Cross, Search } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import wait from '$lib/wait';
 
 	let q = $state(page.url.searchParams.get('q') || '');
-	let debounceTimer: ReturnType<typeof setTimeout>;
 
-	const setSearchParams = async () => {
-		// ✅ create new params from current URL
-		const params = new URLSearchParams(page.url.searchParams);
+	const handleSearch = async () => {
+		await wait(1000);
+		const params = new SvelteURLSearchParams();
 
-		if (q) {
+		if (q !== '') {
 			params.set('q', q);
 		} else {
 			params.delete('q'); // ✅ clean up when empty
 		}
 
-		// ✅ push updated params to URL
-		await goto(`/dashboard/contacts?${params.toString()}`, {
+		await goto(resolve(`/dashboard/contacts?${params.toString()}`), {
 			invalidateAll: true,
 			keepFocus: true // ✅ keep focus on input while typing
 		});
 	};
 
-	const handleSearch = () => {
-		// ✅ clear previous timer before setting new one (proper debounce)
-		if (debounceTimer) {
-			clearTimeout(debounceTimer);
-		}
-		debounceTimer = setTimeout(setSearchParams, 1000);
-	};
-
 	async function clearSearch() {
 		q = '';
-		// ✅ create new params from current URL
-		const params = new URLSearchParams(page.url.searchParams);
+		const params = new SvelteURLSearchParams();
 
 		params.set('q', q);
 
-		// ✅ push updated params to URL
-		await goto(`/dashboard/contacts?${params.toString()}`, {
+		await goto(resolve(`/dashboard/contacts?${params.toString()}`), {
 			invalidateAll: true,
 			keepFocus: true // ✅ keep focus on input while typing
 		});

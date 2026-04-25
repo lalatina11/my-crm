@@ -1,6 +1,7 @@
 import { pgTable, serial, integer, text, varchar, uuid, date } from 'drizzle-orm/pg-core';
 import { id, timeStamps } from '$lib/db-schema-helper';
 import { allowedDealStatus } from '$lib/validators/deal-schema';
+import { allowedActivityStatus, allowedActivityTypes } from '$lib/validators/activity-schema';
 
 export const task = pgTable('task', {
 	id: serial('id').primaryKey(),
@@ -37,13 +38,21 @@ export const deals = pgTable('deals', {
 export const activities = pgTable('activities', {
 	id,
 	...timeStamps,
-	activity: text({
-		enum: ['TASK', 'CALL', 'EMAIL', 'MEETING', 'NOTE', 'OTHER']
+	type: text({
+		enum: allowedActivityTypes
 	}).notNull(),
 	title: varchar({ length: 255 }),
 	description: text(),
 	contactId: uuid('contact_id')
 		.references(() => contacts.id, { onDelete: 'cascade' })
 		.notNull(),
-	date: date({ mode: 'string' })
+	dealId: uuid('deal_id')
+		.references(() => deals.id, { onDelete: 'cascade' })
+		.notNull(),
+	date: date({ mode: 'string' }),
+	status: text({
+		enum: allowedActivityStatus
+	})
+		.notNull()
+		.default('PENDING')
 });

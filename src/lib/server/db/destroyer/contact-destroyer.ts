@@ -11,7 +11,7 @@ const contactDestroyer = async () => {
 	}
 
 	console.log(`[contact-destroyer] Starting deletion of all contacts...`);
-	const deleteResult = await db.delete(tables.contacts);
+	await db.delete(tables.contacts);
 	console.log(`[contact-destroyer] Delete command issued.`);
 
 	const contactsAfter = await db.$count(tables.contacts);

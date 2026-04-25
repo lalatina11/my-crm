@@ -6,6 +6,7 @@ import wait from '$lib/wait';
 type Deal = typeof tables.deals.$inferInsert;
 
 const dealSeeder = async () => {
+	console.log('🚀 [Deal Seeder]: Starting...');
 	const DEAL_NUMBER = 50;
 	const firstContact = await db.query.contacts.findFirst({
 		columns: { id: true }
@@ -15,6 +16,7 @@ const dealSeeder = async () => {
 		throw new Error('Please do contact seeder first!');
 	}
 
+	console.log(`📦 [Deal Seeder]: Generating ${DEAL_NUMBER} deals...`);
 	const deals = Array.from({ length: DEAL_NUMBER }).map(() => {
 		const contactId = firstContact.id;
 		const date = faker.date.soon().toISOString().split('T')[0];
@@ -31,10 +33,11 @@ const dealSeeder = async () => {
 	}) satisfies Array<Deal>;
 
 	for (const [index, deal] of deals.entries()) {
+		console.log(`⏳ [Deal Seeder]: Inserting ${index + 1}/${DEAL_NUMBER}...`);
 		await wait(50);
-		console.log(`Insert ${index + 1} of ${DEAL_NUMBER}`);
 		await db.insert(tables.deals).values(deal);
 	}
+	console.log('✅ [Deal Seeder]: Finished!');
 };
 
 export default dealSeeder;

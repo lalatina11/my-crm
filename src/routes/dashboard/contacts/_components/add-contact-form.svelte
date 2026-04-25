@@ -12,7 +12,7 @@
 	import { capitalizingText } from '$lib/helpers';
 	import type { ApiResponse } from '$lib/types/api-response';
 	import { type Contact } from '$lib/types/db-schema-type';
-	import { allowedStatus, contactSchema } from '$lib/validators/contact-schema';
+	import { allowedContactStatus, contactSchema } from '$lib/validators/contact-schema';
 	import { Plus } from '@lucide/svelte';
 	import { createForm } from '@tanstack/svelte-form';
 	import { capitalizeFirstLetter } from 'better-auth';
@@ -190,7 +190,7 @@
 									<Select.Content>
 										<Select.Group>
 											<Select.Label>Status</Select.Label>
-											{#each allowedStatus as status (status)}
+											{#each allowedContactStatus as status (status)}
 												<Select.Item
 													value={status}
 													label={capitalizeFirstLetter(status)}

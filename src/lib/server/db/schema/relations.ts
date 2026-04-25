@@ -6,15 +6,20 @@ export const contactRelations = relations(contacts, ({ many }) => ({
 	deals: many(deals)
 }));
 
-export const dealRelations = relations(deals, ({ one }) => ({
+export const dealRelations = relations(deals, ({ one, many }) => ({
 	contact: one(contacts, {
 		fields: [deals.contactId],
 		references: [contacts.id]
-	})
+	}),
+	activities: many(activities)
 }));
 export const activitiesRelations = relations(activities, ({ one }) => ({
 	contact: one(contacts, {
 		fields: [activities.contactId],
 		references: [contacts.id]
+	}),
+	deal: one(deals, {
+		fields: [activities.dealId],
+		references: [deals.id]
 	})
 }));
