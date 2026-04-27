@@ -1,29 +1,31 @@
 <script lang="ts">
+	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { page } from '$app/state';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import type { DashboardSidebarMenuItem } from '$lib/types/dashboard-sidebar-menu-item';
 	import { Activity, Contact, HeartHandshake, LayoutDashboard } from '@lucide/svelte/icons';
 	import { buttonVariants } from './ui/button';
+	import { resolve } from '$app/paths';
 
 	const items = [
 		{
 			title: 'Dashboard',
-			url: '/dashboard',
+			url: resolve('/dashboard'),
 			icon: LayoutDashboard
 		},
 		{
 			title: 'Contacts',
-			url: '/dashboard/contacts',
+			url: resolve('/dashboard/contacts'),
 			icon: Contact
 		},
 		{
 			title: 'Deals',
-			url: '/dashboard/deals',
+			url: resolve('/dashboard/deals'),
 			icon: HeartHandshake
 		},
 		{
 			title: 'Activities',
-			url: '/dashboard/activities',
+			url: resolve('/dashboard/activities'),
 			icon: Activity
 		}
 	] satisfies Array<DashboardSidebarMenuItem>;

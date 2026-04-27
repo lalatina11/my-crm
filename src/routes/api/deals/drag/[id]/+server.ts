@@ -1,11 +1,9 @@
-import { env } from '$env/dynamic/private';
+import { IS_PRODUCTION } from '$lib/server/constants';
 import { db } from '$lib/server/db';
 import tables from '$lib/server/db/tables';
-import type { Deal } from '$lib/types/db-schema-type';
 import { dealSchema } from '$lib/validators/deal-schema';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import z from 'zod';
 
 export const PATCH: RequestHandler = async ({ request, params }) => {
 	try {
@@ -38,7 +36,10 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 
 		return json({ success: true });
 	} catch (error) {
-		const message = env.NODE !== 'production' ? (error as Error).message : 'Something went wrong';
-		return json({ success: false, message });
+		if (!IS_PRODUCTION) {
+			const { message } = error as Error;
+			return json({ success: false, message });
+		}
+		return json({ success: false, message: 'Something went wrong' });
 	}
 };

@@ -3,7 +3,7 @@ import { db } from '../db';
 export const getAllDeals = () => {
 	try {
 		return db.query.deals.findMany({
-			with: { contact: true },
+			with: { contact: true, activities: true },
 			orderBy: ({ updatedAt }, { desc }) => desc(updatedAt)
 		});
 	} catch {
