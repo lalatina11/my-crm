@@ -1,9 +1,10 @@
 <script lang="ts">
-	import DashboadSidebar from '$lib/components/dashboad-sidebar.svelte';
-	import ModeToggle from '$lib/components/ModeToggle.svelte';
-	import * as Sidebar from '$lib/components/ui/sidebar';
-	import type { Snippet } from 'svelte';
-	import type { LayoutProps } from './$types';
+	import DashboadSidebar from "$lib/components/dashboad-sidebar.svelte";
+	import ModeToggle from "$lib/components/ModeToggle.svelte";
+	import * as Sidebar from "$lib/components/ui/sidebar";
+	import type { Snippet } from "svelte";
+	import type { LayoutProps } from "./$types";
+	import UserDropdown from "$lib/components/auth/user-dropdown.svelte";
 
 	interface Props extends LayoutProps {
 		children: Snippet<[]>;
@@ -20,7 +21,10 @@
 				<Sidebar.Trigger />
 				<span>Dashboard</span>
 			</div>
-			<ModeToggle />
+			<div class="flex items-center gap-2">
+				<ModeToggle />
+				<UserDropdown />
+			</div>
 		</header>
 		<div class="p-4">
 			{@render children()}
