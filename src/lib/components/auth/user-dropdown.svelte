@@ -8,6 +8,7 @@
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	const session = authClient.useSession();
+
 	let isLoading = $state(false);
 
 	async function handleLogOut() {
@@ -39,13 +40,26 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger>
 			<Avatar.Root>
-				<Avatar.Image src="" />
+				<Avatar.Image src={$session.data?.user.image} />
 				<Avatar.Fallback>
 					<User />
 				</Avatar.Fallback>
 			</Avatar.Root>
 		</DropdownMenu.Trigger>
-		<DropdownMenu.Content>
+		<DropdownMenu.Content class="w-xs">
+			<div class="flex w-full gap-2 p-3">
+				<Avatar.Root>
+					<Avatar.Image src={$session.data?.user.image} />
+					<Avatar.Fallback>
+						<User />
+					</Avatar.Fallback>
+				</Avatar.Root>
+				<div class="flex flex-col">
+					<span class="text-xs">Name: {$session.data?.user.name}</span>
+					<span class="text-xs text-muted-foreground">Email: {$session.data?.user.email}</span>
+				</div>
+			</div>
+			<DropdownMenu.Separator />
 			<DropdownMenu.Label>User Menu</DropdownMenu.Label>
 			<DropdownMenu.Item disabled={isLoading} onclick={handleLogOut} variant="destructive">
 				{#if isLoading}
