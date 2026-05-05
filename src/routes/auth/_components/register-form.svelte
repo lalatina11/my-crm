@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
+	import { env } from "$env/dynamic/public";
 	import { Button } from "$lib/components/ui/button";
 	import * as Field from "$lib/components/ui/field";
 	import { Input } from "$lib/components/ui/input";
@@ -33,8 +34,9 @@
 		},
 		onSubmit: async ({ value }) => {
 			try {
+				const image = `${env.PUBLIC_UI_AVATAR}/?name=${value.name.replace(" ", "-")}&background=random`;
 				await authClient.signUp.email(
-					{ ...value },
+					{ ...value, image },
 					{
 						onError: ({ error }) => {
 							toast.error("Failed!", { description: error.message });
