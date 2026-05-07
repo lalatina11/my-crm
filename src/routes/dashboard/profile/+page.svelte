@@ -29,7 +29,7 @@
 		defaultValues: {
 			name: data.user.name ?? "",
 			email: data.user.email ?? "",
-			image: null as Blob | null,
+			image: null as File | null,
 		},
 		onSubmit: async ({ value }) => {
 			try {
@@ -37,7 +37,7 @@
 				formData.append("name", value.name);
 				formData.append("email", value.email);
 				if (value.image) {
-					formData.append("image", value.image as Blob);
+					formData.append("image", value.image);
 				}
 
 				const { data: res } = await apiRequest.patch<ApiResponse<undefined>>(
