@@ -3,6 +3,7 @@
 	import * as Card from "$lib/components/ui/card";
 	import type { PageProps } from "./$types";
 	import { capitalizingText } from "$lib/helpers";
+	import { PlusCircle } from "@lucide/svelte";
 	import AddActivityForm from "./_components/add-activity-form.svelte";
 
 	const { data }: PageProps = $props();
@@ -55,6 +56,14 @@
 						</div>
 					</Card.Footer>
 				</Card.Root>
+			{:else}
+				<div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+					<div class="rounded-full bg-muted p-6">
+						<PlusCircle class="h-10 w-10 text-muted-foreground" />
+					</div>
+					<h3 class="mt-4 text-lg font-semibold">No activities found</h3>
+					<p class="text-sm text-muted-foreground">Get started by creating your first activity.</p>
+				</div>
 			{/each}
 		</div>
 	</section>

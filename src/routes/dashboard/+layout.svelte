@@ -1,10 +1,10 @@
 <script lang="ts">
+	import UserDropdown from "$lib/components/auth/user-dropdown.svelte";
 	import DashboadSidebar from "$lib/components/dashboad-sidebar.svelte";
 	import ModeToggle from "$lib/components/ModeToggle.svelte";
 	import * as Sidebar from "$lib/components/ui/sidebar";
 	import type { Snippet } from "svelte";
 	import type { LayoutProps } from "./$types";
-	import UserDropdown from "$lib/components/auth/user-dropdown.svelte";
 
 	interface Props extends LayoutProps {
 		children: Snippet<[]>;
@@ -26,6 +26,7 @@
 				<UserDropdown />
 			</div>
 		</header>
+		<!-- <CommandMenu /> -->
 		<div class="p-4">
 			{@render children()}
 		</div>

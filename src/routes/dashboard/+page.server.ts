@@ -14,20 +14,27 @@ export const load: PageServerLoad = async () => {
 	const safeContacts = contacts ?? [];
 	const safeDeals = deals ?? [];
 
+	const today = new Date().toISOString().split('T')[0];
+
 	// Metrics
 	const totalDealValue = safeDeals.reduce((acc, deal) => acc + (deal.value ?? 0), 0);
 	const activeDeals = safeDeals.filter((d) => d.status !== 'CLOSED_WON' && d.status !== 'CLOSED_LOST').length;
 	const wonDeals = safeDeals.filter((d) => d.status === 'CLOSED_WON').length;
-	const pendingActivities = safeActivities.filter((a) => a.status === 'PENDING').length;
+	
+	const pendingActivities = safeActivities.filter((a) => a.status === 'PENDING');
+	const dueTodayActivities = pendingActivities.filter((a) => a.date === today).length;
+	const overdueActivities = pendingActivities.filter((a) => a.date < today).length;
 
 	return {
 		metrics: {
 			totalDealValue,
 			totalDeals: safeDeals.length,
 			totalContacts: safeContacts.length,
-			pendingActivities,
+			pendingActivities: pendingActivities.length,
 			activeDeals,
-			wonDeals
+			wonDeals,
+			dueTodayActivities,
+			overdueActivities
 		},
 		recentActivities: safeActivities.slice(0, 5),
 		recentDeals: safeDeals.slice(0, 5)

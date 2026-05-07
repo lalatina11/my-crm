@@ -4,9 +4,9 @@
 	import { Badge } from "$lib/components/ui/badge";
 	import { Progress } from "$lib/components/ui/progress";
 	import { capitalizingText } from "$lib/helpers";
+	import { cn } from "$lib/utils";
 	import {
 		DollarSign,
-		Users,
 		Briefcase,
 		Activity as ActivityIcon,
 		TrendingUp,
@@ -36,24 +36,28 @@
 			value: formatCurrency(data.metrics.totalDealValue),
 			description: "Sum of all deals",
 			icon: DollarSign,
+			color: "text-primary",
 		},
 		{
 			title: "Active Deals",
 			value: data.metrics.activeDeals.toString(),
 			description: "Currently in progress",
 			icon: Briefcase,
+			color: "text-blue-500",
 		},
 		{
-			title: "Total Contacts",
-			value: data.metrics.totalContacts.toString(),
-			description: "Total reach",
-			icon: Users,
+			title: "Due Today",
+			value: data.metrics.dueTodayActivities.toString(),
+			description: "Tasks for today",
+			icon: Clock,
+			color: "text-orange-500",
 		},
 		{
-			title: "Pending Tasks",
-			value: data.metrics.pendingActivities.toString(),
-			description: "Needs attention",
+			title: "Overdue",
+			value: data.metrics.overdueActivities.toString(),
+			description: "Missed deadlines",
 			icon: ActivityIcon,
+			color: "text-destructive",
 		},
 	]);
 </script>
@@ -63,12 +67,12 @@
 </svelte:head>
 
 <main class="flex flex-col gap-8">
-	<section class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+	<section class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 		<div>
 			<h1 class="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
 			<p class="text-muted-foreground">Welcome back! Here's what's happening with your CRM.</p>
 		</div>
-		<Card.Root class="w-full md:w-[300px]">
+		<Card.Root class="w-full md:w-[250px]">
 			<Card.Header class="pb-2">
 				<div class="flex items-center justify-between">
 					<Card.Title class="text-sm font-medium">Win Rate</Card.Title>
@@ -89,7 +93,7 @@
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
 					<Card.Title class="text-sm font-medium">{item.title}</Card.Title>
-					<item.icon class="h-4 w-4 text-muted-foreground" />
+					<item.icon class={cn("h-4 w-4", item.color)} />
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">{item.value}</div>
