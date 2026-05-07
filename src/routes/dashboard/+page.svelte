@@ -24,12 +24,13 @@
 		}).format(value);
 	};
 
-	const winRate =
+	const winRate = $derived(
 		data.metrics.totalDeals > 0
 			? Math.round((data.metrics.wonDeals / data.metrics.totalDeals) * 100)
-			: 0;
+			: 0,
+	);
 
-	const metricItems = [
+	const metricItems = $derived([
 		{
 			title: "Total Revenue",
 			value: formatCurrency(data.metrics.totalDealValue),
@@ -54,7 +55,7 @@
 			description: "Needs attention",
 			icon: ActivityIcon,
 		},
-	];
+	]);
 </script>
 
 <svelte:head>
@@ -84,7 +85,7 @@
 	</section>
 
 	<section class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-		{#each metricItems as item}
+		{#each metricItems as item (item.title)}
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
 					<Card.Title class="text-sm font-medium">{item.title}</Card.Title>
@@ -118,7 +119,7 @@
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{#each data.recentDeals as deal}
+						{#each data.recentDeals as deal (deal.id)}
 							<Table.Row>
 								<Table.Cell class="font-medium">{deal.title}</Table.Cell>
 								<Table.Cell>{deal.contact.name}</Table.Cell>
@@ -149,7 +150,7 @@
 			</Card.Header>
 			<Card.Content>
 				<div class="space-y-4">
-					{#each data.recentActivities as activity}
+					{#each data.recentActivities as activity (activity.id)}
 						<div class="flex items-center gap-4">
 							<div
 								class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted"
@@ -163,7 +164,7 @@
 								</p>
 							</div>
 							<div class="text-xs text-muted-foreground">
-								{new Date(activity.date).toLocaleDateString()}
+								{new Date(activity.date || "").toLocaleDateString()}
 							</div>
 						</div>
 					{:else}
