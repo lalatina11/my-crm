@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { Badge } from "$lib/components/ui/badge";
-	import { Button } from "$lib/components/ui/button";
 	import * as Card from "$lib/components/ui/card";
-	import { Plus } from "@lucide/svelte";
 	import type { PageProps } from "./$types";
 	import { capitalizingText } from "$lib/helpers";
+	import AddActivityForm from "./_components/add-activity-form.svelte";
 
 	const { data }: PageProps = $props();
 </script>
@@ -17,7 +16,7 @@
 	<section class="flex flex-col gap-6">
 		<div class="flex items-center justify-between">
 			<h1 class="text-3xl font-semibold underline underline-offset-4">Activities</h1>
-			<Button><Plus /> Activity</Button>
+			<AddActivityForm contacts={data.contacts ?? []} deals={data.deals ?? []} />
 		</div>
 		<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.activities as activitiy (activitiy.id)}
@@ -26,10 +25,18 @@
 					activitiy.deal.status.slice(1).toLowerCase().replace("_", " ")}
 				<Card.Root>
 					<Card.Header>
-						<Card.Title>
+						<Card.Title class="flex items-center justify-between">
 							{activitiy.title}
+							<Badge>{capitalizingText(activitiy.type)}</Badge>
 						</Card.Title>
-						<Card.Description>{activitiy.description}</Card.Description>
+						<Card.Description class="flex items-center justify-between">
+							{activitiy.description}
+							{@const actStatus =
+								activitiy.status === "ON_PROGRESS"
+									? "On Progress"
+									: capitalizingText(activitiy.status)}
+							<Badge>{actStatus}</Badge>
+						</Card.Description>
 					</Card.Header>
 					<Card.Content>
 						<div class="flex flex-col gap-3">
