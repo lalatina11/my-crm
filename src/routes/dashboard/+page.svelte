@@ -151,6 +151,8 @@
 			<Card.Content>
 				<div class="space-y-4">
 					{#each data.recentActivities as activity (activity.id)}
+						{@const activityStatus =
+							activity.status === "ON_PROGRESS" ? "On Progress" : capitalizingText(activity.status)}
 						<div class="flex items-center gap-4">
 							<div
 								class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted"
@@ -160,7 +162,7 @@
 							<div class="flex-1 space-y-1">
 								<p class="text-sm leading-none font-medium">{activity.title}</p>
 								<p class="text-xs text-muted-foreground">
-									{capitalizingText(activity.type)} • {activity.status}
+									{capitalizingText(activity.type)} • {activityStatus}
 								</p>
 							</div>
 							<div class="text-xs text-muted-foreground">
