@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import * as Card from '$lib/components/ui/card';
-	import { Plus } from '@lucide/svelte';
-	import type { PageProps } from './$types';
+	import { Badge } from "$lib/components/ui/badge";
+	import { Button } from "$lib/components/ui/button";
+	import * as Card from "$lib/components/ui/card";
+	import { Plus } from "@lucide/svelte";
+	import type { PageProps } from "./$types";
+	import { capitalizingText } from "$lib/helpers";
 
 	const { data }: PageProps = $props();
 </script>
@@ -20,6 +21,9 @@
 		</div>
 		<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.activities as activitiy (activitiy.id)}
+				{@const activityDealStatus =
+					activitiy.deal.status.charAt(0) +
+					activitiy.deal.status.slice(1).toLowerCase().replace("_", " ")}
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>
@@ -32,7 +36,7 @@
 							<span>Deal: </span>
 							<span>Title: {activitiy.deal.title}</span>
 							<span>Date: {activitiy.deal.date}</span>
-							<span>status: <Badge>{activitiy.deal.status}</Badge></span>
+							<span>status: <Badge>{activityDealStatus}</Badge></span>
 						</div>
 					</Card.Content>
 					<Card.Footer>
@@ -40,7 +44,7 @@
 							<span>Contact: </span>
 							<span>Name: {activitiy.contact.name}</span>
 							<span>Email: {activitiy.contact.email}</span>
-							<span>Status: <Badge>{activitiy.contact.status}</Badge></span>
+							<span>Status: <Badge>{capitalizingText(activitiy.contact.status)}</Badge></span>
 						</div>
 					</Card.Footer>
 				</Card.Root>
