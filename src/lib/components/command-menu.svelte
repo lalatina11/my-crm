@@ -6,6 +6,7 @@
 	import {
 		LayoutDashboard,
 		Users,
+		User,
 		Briefcase,
 		Activity as ActivityIcon,
 		Search,
@@ -67,6 +68,10 @@
 			<Command.Item onSelect={() => runCommand(() => goto(resolve("/dashboard/activities")))}>
 				<ActivityIcon class="mr-2 h-4 w-4" />
 				<span>Activities</span>
+			</Command.Item>
+			<Command.Item onSelect={() => runCommand(() => goto(resolve("/dashboard/profile")))}>
+				<User class="mr-2 h-4 w-4" />
+				<span>Profile</span>
 			</Command.Item>
 		</Command.Group>
 		<Command.Separator />

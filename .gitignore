@@ -30,3 +30,5 @@ vite.config.ts.timestamp-*
 
 # Drizzle DB Migration
 src/lib/server/db/migrations
+
+static/uploads

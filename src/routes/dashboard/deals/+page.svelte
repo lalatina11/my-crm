@@ -8,7 +8,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import { capitalizingText } from '$lib/helpers';
 	import { type ApiResponse } from '$lib/types/api-response';
-	import { type Deal } from '$lib/types/db-schema-type';
+	import { type Deal, type DealWithRelations } from '$lib/types/db-schema-type';
 	import { cn } from '$lib/utils';
 	import { allowedDealStatus } from '$lib/validators/deal-schema';
 	import { Proportions, Eye, Calendar, User, DollarSign } from '@lucide/svelte';
@@ -18,12 +18,12 @@
 
 	const { data }: PageProps = $props();
 
-	let deals = $derived(data.deals);
+	let deals = $derived(data.deals ?? []);
 
-	let selectedDeal = $state<Deal | null>(null);
+	let selectedDeal = $state<DealWithRelations | null>(null);
 	let isSheetOpen = $state(false);
 
-	function openDealDetail(deal: Deal) {
+	function openDealDetail(deal: DealWithRelations) {
 		selectedDeal = deal;
 		isSheetOpen = true;
 	}
@@ -33,8 +33,8 @@
 		const data = { status: dropState.targetContainer };
 		if (currentStatus !== data.status) {
 			// optimistic ui
-			deals = deals
-				? deals.map((deal) => {
+			deals = (deals ?? [])
+				.map((deal) => {
 						if (deal.id === id) {
 							return {
 								...deal,
@@ -43,8 +43,7 @@
 							};
 						}
 						return deal;
-					})
-				: [];
+					});
 			// optimistic ui END
 
 			const { data: res } = await apiRequest.patch<ApiResponse<undefined>>(

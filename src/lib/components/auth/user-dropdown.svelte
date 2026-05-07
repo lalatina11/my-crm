@@ -70,6 +70,11 @@
 			</div>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Label>User Menu</DropdownMenu.Label>
+			<DropdownMenu.Item onclick={() => goto(resolve("/dashboard/profile"))}>
+				<div class="flex items-center gap-2">
+					<User class="h-4 w-4" /> Profile
+				</div>
+			</DropdownMenu.Item>
 			<DropdownMenu.Item disabled={isLoading} onclick={handleLogOut} variant="destructive">
 				{#if isLoading}
 					<Spinner />
