@@ -1,10 +1,8 @@
-import { getCurrentUserByHeaders } from "$lib/server/query/get-current-user";
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ request }) => {
-	const session = await getCurrentUserByHeaders(request.headers);
-	if (session !== null && session.user) {
+export const load: PageServerLoad = async ({ locals }) => {
+	if (locals.user) {
 		return redirect(301, "/dashboard");
 	}
 	return {};
