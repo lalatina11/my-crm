@@ -25,3 +25,27 @@ export const loginSchema = z.object({
 		.min(8, "Password is required min 8 character(s)")
 		.max(32, "Password is required max 32 character(s)"),
 });
+
+export const updatePasswordSchema = z
+	.object({
+		current_password: z
+			.string()
+			.min(8, "Current Password is required min 8 character(s)")
+			.max(32, "Current Password is required max 32 character(s)"),
+		password: z
+			.string()
+			.min(8, "New Password is required min 8 character(s)")
+			.max(32, "New Password is required max 32 character(s)"),
+		confirm_password: z
+			.string()
+			.min(8, "Confirm new Password is required min 8 character(s)")
+			.max(32, "Confirm new Password is required max 32 character(s)"),
+	})
+	.refine((data) => data.password !== data.current_password, {
+		error: "New Password must be different with current password",
+		path: ["password"],
+	})
+	.refine((data) => data.password === data.confirm_password, {
+		error: "Password does not match",
+		path: ["confirm_password"],
+	});

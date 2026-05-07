@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LogOut, User } from "@lucide/svelte";
+	import { LogOut, User, Lock } from "@lucide/svelte";
 	import * as DropdownMenu from "../ui/dropdown-menu";
 	import { authClient } from "$lib/hooks/auth-client";
 	import * as Avatar from "../ui/avatar";
@@ -73,6 +73,11 @@
 			<DropdownMenu.Item onclick={() => goto(resolve("/dashboard/profile"))}>
 				<div class="flex items-center gap-2">
 					<User class="h-4 w-4" /> Profile
+				</div>
+			</DropdownMenu.Item>
+			<DropdownMenu.Item onclick={() => goto(resolve("/dashboard/profile/change-password"))}>
+				<div class="flex items-center gap-2">
+					<Lock class="h-4 w-4" /> Change Password
 				</div>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item disabled={isLoading} onclick={handleLogOut} variant="destructive">

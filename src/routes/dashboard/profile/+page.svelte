@@ -14,11 +14,12 @@
 	import type { ApiResponse } from "$lib/types/api-response";
 	import Label from "$lib/components/ui/label/label.svelte";
 	import { authClient } from "$lib/hooks/auth-client";
+	import { resolve } from "$app/paths";
+	import { Shield } from "@lucide/svelte";
 
 	const { data }: PageProps = $props();
 
-	let selectedImage = $state<string | null>(null);
-	let previewImage = $derived(selectedImage ?? data.user.image ?? null);
+	let previewImage = $state("");
 	const session = authClient.useSession();
 
 	const form = createForm(() => ({
@@ -50,7 +51,7 @@
 				);
 				if (res.success) {
 					toast.success("Success!", { description: res.message });
-					selectedImage = null;
+					previewImage = "";
 					await invalidateAll();
 					await $session.refetch();
 				} else {
@@ -164,22 +165,17 @@
 										const file = target.files?.[0];
 										if (file) {
 											field.handleChange(file);
-											const reader = new FileReader();
-											reader.onload = (e) => {
-												selectedImage = e.target?.result as string;
-											};
-											reader.readAsDataURL(file);
-											selectedImage = URL.createObjectURL(file);
+											previewImage = URL.createObjectURL(file);
 										}
 									}}
 									aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
 								/>
 								<div class="mx-auto flex w-1/2 flex-col gap-3">
-									<img
-										src={previewImage ?? data.user.image}
-										alt="..."
-										class="h-auto w-full object-cover"
-									/>
+									{#if previewImage}
+										<img src={previewImage} alt="..." class="h-auto w-full object-cover" />
+									{:else}
+										<img src={data.user.image} alt="..." class="h-auto w-full object-cover" />
+									{/if}
 									<Label class={buttonVariants()} for={field.name}>Change</Label>
 								</div>
 								{#if field.state.meta.isTouched && !field.state.meta.isValid}
@@ -201,5 +197,28 @@
 				</Card.Footer>
 			</form>
 		</Card.Content>
+	</Card.Root>
+
+	<Card.Root class="pb-0">
+		<Card.Header>
+			<Card.Title class="flex items-center gap-2">
+				<Shield class="h-5 w-5" />
+				Security
+			</Card.Title>
+			<Card.Description>Manage your password and account security.</Card.Description>
+		</Card.Header>
+		<Card.Content>
+			<p class="text-sm text-muted-foreground">
+				We recommend using a unique password for your account to ensure maximum security.
+			</p>
+		</Card.Content>
+		<Card.Footer class="border-t bg-muted/50 px-6 py-4">
+			<div class="flex w-full items-center justify-between">
+				<span class="text-sm text-muted-foreground">Need to update your password?</span>
+				<Button variant="outline" size="sm" href={resolve("/dashboard/profile/change-password")}>
+					Update Password
+				</Button>
+			</div>
+		</Card.Footer>
 	</Card.Root>
 </main>
