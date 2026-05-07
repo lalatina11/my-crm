@@ -13,7 +13,7 @@ export const PATCH: RequestHandler = async (event) => {
 	try {
 		const session = await getCurrentUserByEvent(event);
 		if (!session) {
-			return json({ success: false, message: "Unauthorized" }, { status: 401 });
+			return json({ success: false, message: "Unauthorized" });
 		}
 
 		const formData = await event.request.formData();
@@ -24,7 +24,7 @@ export const PATCH: RequestHandler = async (event) => {
 		const validation = profileSchema.safeParse({ name, email, image: imageFile });
 
 		if (!validation.success) {
-			return json({ success: false, message: validation.error.issues[0].message }, { status: 400 });
+			return json({ success: false, message: validation.error.issues[0].message });
 		}
 
 		// Check if email is already taken by another user
@@ -34,7 +34,7 @@ export const PATCH: RequestHandler = async (event) => {
 			});
 
 			if (existingUser) {
-				return json({ success: false, message: "Email already taken" }, { status: 400 });
+				return json({ success: false, message: "Email already taken" });
 			}
 		}
 
@@ -59,7 +59,6 @@ export const PATCH: RequestHandler = async (event) => {
 				name,
 				email,
 				image: imageUrl,
-				updatedAt: new Date(),
 			})
 			.where(eq(userTable.id, session.user.id));
 
@@ -67,8 +66,8 @@ export const PATCH: RequestHandler = async (event) => {
 	} catch (error) {
 		if (!IS_PRODUCTION) {
 			console.error(error);
-			return json({ success: false, message: (error as Error).message }, { status: 500 });
+			return json({ success: false, message: (error as Error).message });
 		}
-		return json({ success: false, message: "Internal Server Error" }, { status: 500 });
+		return json({ success: false, message: "Internal Server Error" });
 	}
 };
