@@ -7,6 +7,14 @@
 	import { Spinner } from "../ui/spinner";
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
+	import type { Snippet } from "svelte";
+
+	interface Props {
+		children?: Snippet<[]>;
+	}
+
+	let props: Props = $props();
+
 	const session = authClient.useSession();
 
 	let isLoading = $state(false);
@@ -39,12 +47,16 @@
 {#if session.value !== null}
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger>
-			<Avatar.Root>
-				<Avatar.Image src={$session.data?.user.image} />
-				<Avatar.Fallback>
-					<User />
-				</Avatar.Fallback>
-			</Avatar.Root>
+			{#if props.children}
+				{@render props.children()}
+			{:else}
+				<Avatar.Root>
+					<Avatar.Image src={$session.data?.user.image} />
+					<Avatar.Fallback>
+						<User />
+					</Avatar.Fallback>
+				</Avatar.Root>
+			{/if}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content class="w-xs">
 			<div class="flex w-full gap-2 p-3">
