@@ -1,26 +1,30 @@
 <script lang="ts">
 	import { invalidateAll } from "$app/navigation";
-	import apiRequest from "$lib/api-request";
-	import { Button, buttonVariants } from "$lib/components/ui/button";
-	import * as Dialog from "$lib/components/ui/dialog";
-	import * as Field from "$lib/components/ui/field";
-	import Input from "$lib/components/ui/input/input.svelte";
-	import { ScrollArea } from "$lib/components/ui/scroll-area";
-	import * as Select from "$lib/components/ui/select";
-	import { Spinner } from "$lib/components/ui/spinner";
-	import { Textarea } from "$lib/components/ui/textarea";
-	import { capitalizingText } from "$lib/helpers";
-	import type { ApiResponse } from "$lib/types/api-response";
-	import { type Activity, type Contact, type Deal } from "$lib/types/db-schema-type";
+	import apiRequest from '$lib/api-request';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Field from '$lib/components/ui/field';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import * as Select from '$lib/components/ui/select';
+	import * as Popover from '$lib/components/ui/popover';
+	import { Calendar } from '$lib/components/ui/calendar';
+	import { Spinner } from '$lib/components/ui/spinner';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import { capitalizingText } from '$lib/helpers';
+	import type { ApiResponse } from '$lib/types/api-response';
+	import { type Activity, type Contact, type Deal } from '$lib/types/db-schema-type';
 	import {
 		allowedActivityStatus,
 		allowedActivityTypes,
-		activitySchema,
-	} from "$lib/validators/activity-schema";
-	import { Plus } from "@lucide/svelte";
-	import { createForm } from "@tanstack/svelte-form";
-	import { toast } from "svelte-sonner";
-	import type { FormEventHandler } from "svelte/elements";
+		activitySchema
+	} from '$lib/validators/activity-schema';
+	import { Plus, Clock } from '@lucide/svelte';
+	import { createForm } from '@tanstack/svelte-form';
+	import { toast } from 'svelte-sonner';
+	import type { FormEventHandler } from 'svelte/elements';
+	import { parseDate } from '@internationalized/date';
+
 
 	type AllowedActivityStatus = (typeof allowedActivityStatus)[number];
 	type AllowedActivityType = (typeof allowedActivityTypes)[number];
@@ -282,20 +286,28 @@
 
 					<form.Field name="date">
 						{#snippet children(field)}
-							<Field.Set class="gap-2">
+							<Field.Set class="flex flex-col gap-2">
 								<Field.Label for={field.name}>Date</Field.Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									type="date"
-									value={field.state.value}
-									onblur={field.handleBlur}
-									oninput={(e) => {
-										const { value } = e.target as HTMLInputElement;
-										field.handleChange(value);
-									}}
-									aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
-								/>
+								<Popover.Root>
+									<Popover.Trigger
+										class={buttonVariants({
+											variant: "outline",
+											class: "w-full justify-start text-left font-normal",
+										})}
+									>
+										<Clock class="mr-2 h-4 w-4" />
+										{field.state.value ? field.state.value : "Pick a date"}
+									</Popover.Trigger>
+									<Popover.Content class="w-auto p-0" align="start">
+										<Calendar
+											type="single"
+											value={field.state.value ? parseDate(field.state.value) : undefined}
+											onValueChange={(v) => {
+												field.setValue(v ? v.toString() : "");
+											}}
+										/>
+									</Popover.Content>
+								</Popover.Root>
 								{#if field.state.meta.isTouched && !field.state.meta.isValid}
 									<Field.Error errors={[{ message: field.state.meta.errors[0]?.message }]} />
 								{/if}
