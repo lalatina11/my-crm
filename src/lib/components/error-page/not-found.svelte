@@ -1,6 +1,9 @@
 <script>
-	import { buttonVariants } from '../ui/button';
-	const isLoggedIn = false;
+	import { authClient } from "$lib/hooks/auth-client";
+	import { resolve } from "$app/paths";
+	import { buttonVariants } from "../ui/button";
+	let session = authClient.useSession();
+	const isLoggedIn = $derived($session.data !== null);
 </script>
 
 <svelte:head>
@@ -17,9 +20,11 @@
 			We couldn't find any CRM contacts at this address.
 		</p>
 		{#if isLoggedIn}
-			<a href="/dashboard" class={buttonVariants({ variant: 'outline' })}> ← Back to Dashboard </a>
+			<a href={resolve("/dashboard")} class={buttonVariants({ variant: "outline" })}>
+				← Back to Dashboard
+			</a>
 		{:else}
-			<a href="/" class={buttonVariants({ variant: 'outline' })}> ← Back to Home </a>
+			<a href={resolve("/")} class={buttonVariants({ variant: "outline" })}> ← Back to Home </a>
 		{/if}
 	</div>
 </main>
