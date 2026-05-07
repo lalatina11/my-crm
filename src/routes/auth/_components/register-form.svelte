@@ -6,6 +6,7 @@
 	import * as Field from "$lib/components/ui/field";
 	import { Input } from "$lib/components/ui/input";
 	import * as InputGroup from "$lib/components/ui/input-group";
+	import { Spinner } from "$lib/components/ui/spinner";
 	import { authClient } from "$lib/hooks/auth-client";
 	import { registerSchema } from "$lib/validators/auth-schema";
 	import { Eye, EyeOff } from "@lucide/svelte";
@@ -53,6 +54,7 @@
 			}
 		},
 	}));
+	let formLoading = form.useStore((state) => state.isSubmitting);
 </script>
 
 <svelte:head>
@@ -192,6 +194,12 @@
 				</Field.Field>
 			{/snippet}
 		</form.Field>
-		<Button type="submit">Submit</Button>
+		<Button type="submit">
+			{#if formLoading.current}
+				<Spinner />
+			{:else}
+				Register
+			{/if}
+		</Button>
 	</Field.Group>
 </form>

@@ -20,15 +20,10 @@
 	let isLoading = $state(false);
 
 	async function handleLogOut() {
+		isLoading = true;
 		try {
 			await authClient.signOut({
 				fetchOptions: {
-					onRequest: () => {
-						isLoading = true;
-					},
-					onResponse: () => {
-						isLoading = false;
-					},
 					onError: ({ error }) => {
 						toast.error("Failed", { description: error.message });
 					},
@@ -40,6 +35,8 @@
 			});
 		} catch {
 			toast.error("Failed", { description: "Something went wrong!" });
+		} finally {
+			isLoading = false;
 		}
 	}
 </script>
